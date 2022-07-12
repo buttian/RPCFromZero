@@ -1,13 +1,13 @@
 package com.buttian.rpc.common;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
     private Integer id;
     private String userName;

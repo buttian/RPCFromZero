@@ -4,4 +4,5 @@ import com.buttian.rpc.common.User;
 
 public interface UserService {
     User getUserByUserId(Integer id);
+    Integer insertUser(User user);
 }
