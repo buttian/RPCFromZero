@@ -1,6 +1,8 @@
 package com.buttian.rpc.client;
 
+import com.buttian.rpc.common.Blog;
 import com.buttian.rpc.common.User;
+import com.buttian.rpc.service.BlogService;
 import com.buttian.rpc.service.UserService;
 
 import java.io.IOException;
@@ -13,13 +15,17 @@ import java.util.Random;
 public class MyRPCClient {
     public static void main(String[] args){
         ClientProxy cp = new ClientProxy("localhost", 8899);
-        UserService proxy = cp.getProxy(UserService.class);
+        UserService userService = cp.getProxy(UserService.class);
 
-        User userById = proxy.getUserByUserId(new Random().nextInt());
+        User userById = userService.getUserByUserId(new Random().nextInt());
         System.out.println("从服务端得到的user为：" + userById);
 
         User user = User.builder().userName("闪陶陶").id(new Random().nextInt()).sex(true).build();
-        Integer integer = proxy.insertUser(user);
+        Integer integer = userService.insertUser(user);
         System.out.println("向服务端插入数据：" + integer);
+
+        BlogService blogService = cp.getProxy(BlogService.class);
+        Blog blogById = blogService.getBlogById(new Random().nextInt());
+        System.out.println("从服务端得到的blog为：" + blogById);
     }
 }
