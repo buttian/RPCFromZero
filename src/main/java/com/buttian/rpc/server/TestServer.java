@@ -1,9 +1,9 @@
 package com.buttian.rpc.server;
 
 import com.buttian.rpc.service.BlogService;
+import com.buttian.rpc.service.BlogServiceImpl;
 import com.buttian.rpc.service.UserService;
-
-import java.util.HashMap;
+import com.buttian.rpc.service.UserServiceImpl;
 
 public class TestServer {
     public static void main(String[] args){
@@ -19,8 +19,11 @@ public class TestServer {
 //        RPCServer rpcserver = new SimpleRPCServer(serviceProvider);
 //        rpcserver.start(8899);
 
-        RPCServer threadPoolRpcServer = new ThreadPoolRPCServer(serviceProvider);
-        threadPoolRpcServer.start(8899);
+//        RPCServer threadPoolRpcServer = new ThreadPoolRPCServer(serviceProvider);
+//        threadPoolRpcServer.start(8899);
+
+        RPCServer nettyRPCServer = new NettyRPCServer(serviceProvider);
+        nettyRPCServer.start(8899);
     }
 
 }

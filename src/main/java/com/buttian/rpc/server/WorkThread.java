@@ -24,8 +24,9 @@ public class WorkThread implements Runnable{
     @Override
     public void run() {
         try{
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            //创建顺序问题
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             //读取request
             RPCRequest request = (RPCRequest)ois.readObject();
 
