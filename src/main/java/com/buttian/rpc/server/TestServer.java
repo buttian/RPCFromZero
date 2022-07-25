@@ -12,7 +12,7 @@ public class TestServer {
 //        HashMap<String, Object> serviceProvide = new HashMap<>();
 //        serviceProvide.put("com.buttian.rpc.service.BlogService", blogService);
 //        serviceProvide.put("com.buttian.rpc.service.UserService", userService);
-        ServiceProvider serviceProvider = new ServiceProvider();
+        ServiceProvider serviceProvider = new ServiceProvider("127.0.0.1", 8899);
         serviceProvider.provideServiceInterface(blogService);
         serviceProvider.provideServiceInterface(userService);
 

@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class MyRPCClient {
     public static void main(String[] args){
-        RPCClient nettyRPCClient = new NettyRPCClient("localhost", 8899);
+        RPCClient nettyRPCClient = new NettyRPCClient();
         ClientProxy cp = new ClientProxy(nettyRPCClient);
 
         UserService userService = cp.getProxy(UserService.class);
