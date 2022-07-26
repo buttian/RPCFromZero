@@ -1,5 +1,8 @@
 package com.buttian.rpc.register;
 
+import com.buttian.rpc.loadbalance.LoadBalance;
+import com.buttian.rpc.loadbalance.RandomLoadBalance;
+import com.buttian.rpc.loadbalance.RoundLoadBalance;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -13,6 +16,7 @@ import java.util.List;
 public class ZkServiceRegister implements ServiceRegister{
     private CuratorFramework client;
     private static final String ROOT_PATH = "MyRPC";
+    private LoadBalance roundLoadBalance;
     //zookeeper客户端初始化，与zookeeper服务端建立连接
     public ZkServiceRegister(){
         RetryPolicy policy = new ExponentialBackoffRetry(1000, 3);
@@ -24,6 +28,7 @@ public class ZkServiceRegister implements ServiceRegister{
                 .build();
         this.client.start();
         System.out.println("zookeeper连接成功");
+        roundLoadBalance = new RoundLoadBalance();
     }
 
     @Override
@@ -36,8 +41,10 @@ public class ZkServiceRegister implements ServiceRegister{
             }
             String path = "/" + serviceName + "/" + getServiceAddress(serverAddress);
             //创建临时节点
-            client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL)
-                    .forPath(path);
+            if(client.checkExists().forPath(path) == null) {
+                client.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL)
+                        .forPath(path);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +55,7 @@ public class ZkServiceRegister implements ServiceRegister{
         try{
             //获取子节点
             List<String> strings = client.getChildren().forPath("/" + serviceName);
-            String address = strings.get(0);
+            String address = roundLoadBalance.balance(strings);
             return parseAddress(address);
         } catch (Exception e) {
             e.printStackTrace();

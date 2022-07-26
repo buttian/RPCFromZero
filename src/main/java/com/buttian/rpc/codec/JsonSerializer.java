@@ -22,6 +22,7 @@ public class JsonSerializer implements Serializer{
             case 0:
                 //得到request对象
                 RPCRequest request = JSON.parseObject(bytes, RPCRequest.class);
+                if(request.getParams() == null) return request;
                 Object[] objects = new Object[request.getParams().length];
                 for(int i = 0; i < objects.length; i++){
                     Class<?> paramType = request.getParasTypes()[i];
