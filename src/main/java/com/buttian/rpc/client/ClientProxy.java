@@ -14,9 +14,7 @@ public class ClientProxy implements InvocationHandler {
     //不同的service需要进行不同的封装，需要一层动态代理根据反射封装不同的Service
     //传入参数Service接口的class对象，反射封装成一个request
 
-    private String host;
-    private int port;
-
+    private RPCClient client;
 
     //jdk动态代理
     @Override
@@ -25,7 +23,7 @@ public class ClientProxy implements InvocationHandler {
                 .methodName(method.getName())
                 .params(args)
                 .parasTypes(method.getParameterTypes()).build();
-        RPCResponse response = IOCClient.sendRequest(host, port, request);
+        RPCResponse response = client.sendRequest(request);
         return response.getData();
     }
 

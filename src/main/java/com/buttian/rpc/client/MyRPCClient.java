@@ -14,9 +14,10 @@ import java.util.Random;
 
 public class MyRPCClient {
     public static void main(String[] args){
-        ClientProxy cp = new ClientProxy("localhost", 8899);
-        UserService userService = cp.getProxy(UserService.class);
+        RPCClient nettyRPCClient = new NettyRPCClient();
+        ClientProxy cp = new ClientProxy(nettyRPCClient);
 
+        UserService userService = cp.getProxy(UserService.class);
         User userById = userService.getUserByUserId(new Random().nextInt());
         System.out.println("从服务端得到的user为：" + userById);
 

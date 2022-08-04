@@ -1,4 +1,4 @@
-package com.buttian.rpc.server;
+package com.buttian.rpc.service;
 
 import com.buttian.rpc.common.Blog;
 import com.buttian.rpc.service.BlogService;
